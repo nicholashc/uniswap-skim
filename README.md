@@ -8,7 +8,7 @@ UniswapV2 has an interesting function called [`skim(address)`](https://github.co
 
 These scripts scan all of the uniV2 contracts to look for those opportunities. Usually there are only a handful, but tokens with changing supplies like aTokens or rebase tokens like AMPL can create some chaos. Most of the skim balances are so small that they aren't worth the gas to call. But sometimes they are profitable. 
 
-If try to call skim from an EOA expect to be frontrun. There are an increasing number of bots searching for these opportunities.
+If try to call skim from an EOA expect to be frontrun. There are an increasing number of bots searching for these opportunities. You may want to use something like the `Forwarder.sol` contract example.
 
 ## install
 
