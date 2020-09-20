@@ -75,8 +75,10 @@ $ uniswap-skim npm run update
 9772 10897239
 9773 10897302
 9774 10897491
+```
 
-uniswap-skim npm run skim
+```
+$ uniswap-skim npm run skim
 
 > uniswap-skim@1.0.0 skim /yourDirectory/uniswap-skim
 > node ./scripts/skim.js
