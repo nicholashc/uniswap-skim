@@ -31,9 +31,9 @@ If you try to call skim from an EOA expect to be frontrun. There are an increasi
 3. there is a "whitelist" that correctly names tokens who didn't follow the ERC-20 standard and return a byte32 for their name (looking at you MKR). there is probably a smarter way to deal with this edge case than hardcoding but ¯\_(ツ)_/¯
 4. if you run into problems updating `events.js` hardcode the path directory in `fs.writeFile()` in `uniMarkets.js`
 5. `skim.js` defaults to return skim-able values that are greater than $0.10 or "NaN", which means coingecko does not have a price for that token. change those in the code if you want different parameters
-6. `events.js` in this repo is current as of block 10897528 and there are 9777 uniV2 Pairs
+6. `events.js` in this repo is current as of block 10897528 and there are 9777 uniV2🦄 Pairs
 7. `skim.js` can take a few minutes to run as more and more markets are added
-8. if `uniMarkets.js` returns no results it's possible that there were no new pairs added since the last time you called the function
+8. if `uniMarkets.js` returns no results it's possible that there were no new pairs were deployed since the last time you called the function
 
 ## example output
 
