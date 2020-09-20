@@ -8,7 +8,7 @@
     "skim": "node ./scripts/skim.js"
   },
   "author": "@nicholashc",
-  "license": "MIT",
+  "license": "Unlicence",
   "dependencies": {
     "axios": "^0.20.0",
     "web3": "^1.3.0"
