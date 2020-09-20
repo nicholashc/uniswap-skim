@@ -15,7 +15,7 @@ const createPairTopic =
   "0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9";
 
 let i = 0;
-const minDollarVal = 0.1;
+const minDollarVal = 0.01;
 
 const getPairs = async (count) => {
   if (count < events.length) {
@@ -163,15 +163,31 @@ const getName = (address) => {
 };
 
 const splitBN = (num, dec, comma) => {
-  let pad = num.padStart(dec, "0");
-  let aboveZero = num.length > dec ? num.substring(0, num.length - dec) : 0;
-  let belowZero =
-    num.length >= dec ? num.substring(num.length - dec, num.length) : pad;
-  if (comma) {
-    return `${Number(aboveZero).toLocaleString()}.${belowZero}`;
+
+  if (num.indexOf('e') !== -1) {
+    let exp = num.substring(num.length - 2, num.length)
+    let first = num.substring(0, 1)
+    let next = num.substring(3, (exp - dec + 3))
+    let aboveZero = first.concat(next)
+    let belowZero = num.substring(4, (num.length - 4))
+    if (comma) {
+      aboveZero = first.concat(",").concat(next);
+      return `${aboveZero}.${belowZero.padEnd(dec, "0")}`;
+    } else {
+      return `$${aboveZero}.${belowZero.padEnd(dec, "0")}`;
+    }
   } else {
-    return `${aboveZero}.${belowZero}`;
+    let aboveZero = num.length > dec ? num.substring(0, num.length - dec) : 0;
+    let belowZero =
+      num.length >= dec ? num.substring((num.length - dec), num.length) : num.padStart(dec, "0");
+    if (comma) {
+      return `${aboveZero.toLocaleString()}.${belowZero}`;
+    } else {
+      return `${aboveZero}.${belowZero}`;
+    }
   }
+
+
 };
 
 const getPrice = async (address) => {
