@@ -4,7 +4,7 @@ Scripts to scan all of the uniswapV2 contracts and search for mismatched balance
 
 ## about
 
-UniswapV2 has an interesting function called `skim(address)` that lets anyone claim a positive discrepancy between the actual token balance in the contract and the reserve number stored in the Pair contract. 
+UniswapV2 has an interesting function called [`skim(address)`](https://github.com/Uniswap/uniswap-v2-core/blob/master/contracts/UniswapV2Pair.sol#L190-L195) that lets anyone claim a positive discrepancy between the actual token balance in the contract and the reserve number stored in the Pair contract. 
 
 These scripts scan all of the uniV2 contracts to look for those opportunities. Usually there are only a handful, but tokens with changing supplies like aTokens or rebase tokens like AMPL can create some chaos. Most of the skim balances are so small that they aren't worth the gas to call. But sometimes they are profitable. 
 
@@ -133,4 +133,4 @@ $ uniswap-skim npm run skim
 
 ## disclaimers
 
-I take no responsibility for any use, misuse, mistakes, or funds related to the use of this code. Use and adapt as you see fit. There is also a benevolent way to correct uniV2 balance/reserve discrepancies by calling `sync()`. The choice is yours!
+I take no responsibility for any use, misuse, mistakes, or funds lost or received related to the use of this code. Use and adapt as you see fit. There is also a benevolent way to correct uniV2 balance/reserve discrepancies by calling [`sync()`](https://github.com/Uniswap/uniswap-v2-core/blob/master/contracts/UniswapV2Pair.sol#L198-L200). Good or evil. The choice is yours!
