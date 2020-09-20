@@ -37,8 +37,10 @@ If you try to call skim from an EOA expect to be frontrun. There are an increasi
 
 ## example output
 
+what your terminal should roughly look like after running `npm run update`
+
 ```
-$ uniswap-skim npm run update
+uniswap-skim npm run update
 
 > uniswap-skim@1.0.0 update /yourDirectory/uniswap-skim
 > node ./scripts/uniMarkets.js
@@ -78,8 +80,10 @@ $ uniswap-skim npm run update
 9774 10897491
 ```
 
+what your terminal should roughly look like after running `npm run skim`
+
 ```
-$ uniswap-skim npm run skim
+uniswap-skim npm run skim
 
 > uniswap-skim@1.0.0 skim /yourDirectory/uniswap-skim
 > node ./scripts/skim.js
