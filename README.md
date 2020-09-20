@@ -21,8 +21,8 @@ If try to call skim from an EOA expect to be frontrun. There are an increasing n
 1. there are two main scripts: 
   - `uniMarkets.js` scans for any newly deployed markets since the last known Pair and appends `logs/events.js` with any new markets
   - `skim.js` checks every market in `log/events.js` and looks for skim opportunities. It attempts to use the coingecko api to find a price for the value of the skim-able tokens
-2. `npm run update` will run `uniMarket.js` and update the logs to the latest block
-3. `npm run skim` will search for skim-able opportunities
+2. from the root of the repo directory `npm run update` will run `uniMarket.js` and update the logs to the latest block
+3. from the root of the repo directory `npm run skim` will search for skim-able opportunities
 
 ## usage notes
 
