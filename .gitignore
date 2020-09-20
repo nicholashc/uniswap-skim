@@ -1,2 +1,2 @@
 .git
-node-modules
+/node-modules
