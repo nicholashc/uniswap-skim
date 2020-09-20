@@ -34,6 +34,7 @@ If you try to call skim from an EOA expect to be frontrun. There are an increasi
 6. `events.js` in this repo is current as of block 10898390 and there are 9791 uniV2🦄 Pairs
 7. `skim.js` can take a few minutes to run as there are almost 10,000 pairs to search!
 8. if `uniMarkets.js` returns no results it's possible that there were no new pairs were deployed since the last time you called the function
+9. the script ignores cases where the reserve is higher than the balance, since that is not skim-able (this happens with rebase coins sometimes)
 
 ## example output
 
