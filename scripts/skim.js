@@ -15,6 +15,7 @@ const createPairTopic =
   "0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9";
 
 let i = 0;
+const minDollarVal = 0.0000000000001;
 
 const getPairs = async (count) => {
   if (count < events.length) {
@@ -65,16 +66,17 @@ const getPairs = async (count) => {
         const dec0 = await token0contract.methods.decimals().call();
         const dec1 = await token1contract.methods.decimals().call();
 
-        const balance0 = splitBN(bal0, dec0);
-        const reserve0 = splitBN(res0, dec0);
-        const balance1 = splitBN(bal1, dec1);
-        const reserve1 = splitBN(res1, dec1);
+        const balance0 = splitBN(bal0, dec0, true);
+        const reserve0 = splitBN(res0, dec0, true);
+        const balance1 = splitBN(bal1, dec1, true);
+        const reserve1 = splitBN(res1, dec1, true);
 
         const diff0 = bal0 - res0;
         const diff1 = bal1 - res1;
 
         const pair = {
           pairAddress: pairAdd,
+          pairIndex: count,
           token0: {
             address: token0Add,
             name: name0,
@@ -82,9 +84,9 @@ const getPairs = async (count) => {
             balance: balance0,
             reserve: reserve0,
             imbalance: diff0.toString() > 0 ? {
-              diff: splitBN(diff0.toString(), dec0),
-              price: await getPrice(token0Add),
-              value: await getValue(splitBN(diff0.toString(), dec0), await getPrice(token0Add))
+              diff: splitBN(diff0.toString(), dec0, true),
+              usdPrice: await getPrice(token0Add),
+              value: await getValue(splitBN(diff0.toString(), dec0, false), await getPrice(token0Add))
             } : false
           },
           token1: {
@@ -94,9 +96,9 @@ const getPairs = async (count) => {
             balance: balance1,
             reserve: reserve1,
             imbalance: diff1.toString() > 0 ? {
-              diff: splitBN(diff1.toString(), dec1),
-              price: await getPrice(token1Add),
-              value: await getValue(splitBN(diff1.toString(), dec1), await getPrice(token1Add))
+              diff: splitBN(diff1.toString(), dec1, true),
+              usdPrice: await getPrice(token1Add),
+              value: await getValue(splitBN(diff1.toString(), dec1, false), await getPrice(token1Add))
             } : false
           }
         };
@@ -109,10 +111,21 @@ const getPairs = async (count) => {
             pair.token0.imbalance !== false ||
             pair.token1.imbalance !== false
           ) {
-            if (pair.token0.imbalance.value === "NaN" ||
-              pair.token1.imbalance.value === "NaN" ||
-              pair.token0.imbalance.value > 0.1 ||
-              pair.token1.imbalance.value > 0.1) {
+            if (
+              pair.token0.imbalance.value === "no coingecko price" ||
+              pair.token1.imbalance.value === "no coingecko price"
+            ) {
+              console.log(`${JSON.stringify(pair, null, 2)},`);
+            } else if (
+              Number(pair.token0.imbalance.value) > minDollarVal ||
+              Number(pair.token1.imbalance.value) > minDollarVal
+            ) {
+              if (pair.token0.imbalance.value) {
+                pair.token0.imbalance.value = `\$${(pair.token0.imbalance.value).toLocaleString()}🦄`
+              }
+              if (pair.token1.imbalance.value) {
+                pair.token1.imbalance.value = `\$${(pair.token1.imbalance.value).toLocaleString()}🦄`
+              }
               console.log(`${JSON.stringify(pair, null, 2)},`);
             }
           }
@@ -149,39 +162,38 @@ const getName = (address) => {
   }
 };
 
-const commas = (num) => {
-  if (!num) {
-    return 0;
-  }
-  let num_parts = num.split(".");
-  num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return num_parts.join(".");
-};
-
-const splitBN = (num, dec) => {
+const splitBN = (num, dec, comma) => {
   let pad = num.padStart(dec, "0");
   let aboveZero = num.length > dec ? num.substring(0, num.length - dec) : 0;
   let belowZero =
     num.length >= dec ? num.substring(num.length - dec, num.length) : pad;
-  return `${commas(aboveZero)}.${belowZero}`;
+  if (comma) {
+    return `${Number(aboveZero).toLocaleString()}.${belowZero}`;
+  } else {
+    return `${aboveZero}.${belowZero}`;
+  }
 };
 
 const getPrice = async (address) => {
   try {
     const response = await axios.get(`https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${address}&vs_currencies=USD`);
     const strAdd = ` '${address}'`
-    const price = await response.data[address]['usd']
+    const price = await response.data[address]['usd'];
     return price;
   } catch (e) {
-    // console.error(e);
+    return "no coingecko price";
   }
 }
 
-const getValue = async (amount, price) => {
-  const amnt = await Number(amount);
-  const prc = await Number(price);
-  const value = (amnt * prc).toFixed(2);
-  return (value)
+const getValue = (amount, price) => {
+  if (price === "no coingecko price") {
+    return price;
+  } else {
+    const amnt = typeof amount === "number" ? amount : Number(amount);
+    const prc = typeof price === "number" ? price : Number(price);
+    const value = Number(amnt * prc).toFixed(2);
+    return value;
+  }
 }
 
 const tokenBlackList = [
@@ -219,7 +231,8 @@ const tokenBlackList = [
   "0x94564dcf383c3a6e48f8fd39553fba3711f8be88",
   "0x6e743b854bc937a794dd43e36b04cc6a13bfd063",
   "0xfb3ef7e93fc5141fdd26ee0e4f39f7ecaeede0a6",
-  "0xda16399dbfcf5fd1bcd46066f7a17856c24fc7f3"
+  "0xda16399dbfcf5fd1bcd46066f7a17856c24fc7f3",
+  "0xbc6e3cfde888e215bf7e425ee88cb133b1210be9"
 ];
 
 const whitelist = [{
