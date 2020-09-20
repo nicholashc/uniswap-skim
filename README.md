@@ -31,7 +31,103 @@ If you use this script from an EOA expect to be frontrun. There are an increasin
 3. there is a "whitelist" that correctly names tokens who didn't follow the ERC-20 standard and return a byte32 for their name. there is probabably a smarter way to deal with this edge case
 4. if you run into problems updating `events.js` hardcode the path directory in `fs.writeFile()` in `uniMarkets.js`
 5. `skim.js` defaults to return skimable values that are greater than $0.10 or "NaN", which means coingecko does not have a price for that token
-6. `events.js` is current as of block _______ and there are _______ uniV2 Pairs
+6. `events.js` is current as of block 10897491 and there are 9774 uniV2 Pairs
+7. `skim.js` can take a few minutes to run as more and more markets are added
+
+## example output
+
+```
+$ uniswap-skim npm run update
+
+> uniswap-skim@1.0.0 update /yourDirectory/uniswap-skim
+> node ./scripts/uniMarkets.js
+
+9742 10896099
+9743 10896192
+9744 10896201
+9745 10896233
+9746 10896241
+9747 10896287
+9748 10896328
+9749 10896370
+9750 10896393
+9751 10896406
+9752 10896535
+9753 10896619
+9754 10896624
+9755 10896627
+9756 10896652
+9757 10896684
+9758 10896691
+9759 10896710
+9760 10896736
+9761 10896778
+9762 10896834
+9763 10896862
+9764 10896889
+9765 10896902
+9766 10896921
+9767 10896956
+9768 10896960
+9769 10896979
+9770 10897001
+9771 10897237
+9772 10897239
+9773 10897302
+9774 10897491
+
+uniswap-skim npm run skim
+
+> uniswap-skim@1.0.0 skim /yourDirectory/uniswap-skim
+> node ./scripts/skim.js
+
+{
+  "pairAddress": "0x243e8c1a5f67f042800571a0667bfd26ddb94fa4",
+  "token0": {
+    "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "name": "Wrapped Ether",
+    "decimals": "18",
+    "balance": "0.568343703003059029",
+    "reserve": "0.568343703003059029",
+    "imbalance": false
+  },
+  "token1": {
+    "address": "0xd29fa4b8cc936a68bb560b19eed969ebfdbaa565",
+    "name": "Ace Wins",
+    "decimals": "10",
+    "balance": "259,085.9413577280",
+    "reserve": "253,591.7648822625",
+    "imbalance": {
+      "diff": "5,494.1764754655",
+      "price": 0.00461814,
+      "value": "NaN"
+    }
+  }
+},
+{
+  "pairAddress": "0xa163bc0f3e37374288566f99f5ab313ea2b3410b",
+  "token0": {
+    "address": "0x328c4c80bc7aca0834db37e6600a6c49e12da4de",
+    "name": "Aave Interest bearing SNX",
+    "decimals": "18",
+    "balance": "1,001.541332754973076103",
+    "reserve": "1,001.098402393891231926",
+    "imbalance": {
+      "diff": "0.442930361081790460",
+      "price": 4.42,
+      "value": "1.96"
+    }
+  },
+  "token1": {
+    "address": "0x78a685e0762096ed0f98107212e98f8c35a9d1d8",
+    "name": "Bloc",
+    "decimals": "10",
+    "balance": "1.6980857933",
+    "reserve": "1.6980857933",
+    "imbalance": false
+  }
+},
+```
 
 ## disclaimers
 
