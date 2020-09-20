@@ -8,7 +8,7 @@ UniswapV2 has an interesting function called [`skim(address)`](https://github.co
 
 These scripts scan all of the uniV2 contracts to look for those opportunities. Usually there are only a handful, but tokens with changing supplies like aTokens or rebase tokens like AMPL can create some chaos. Most of the skim balances are so small that they aren't worth the gas to call. But sometimes they are profitable. 
 
-If you use this script from an EOA expect to be frontrun. There are an increasing number of bots searching for these opportunities.
+If try to call skim from an EOA expect to be frontrun. There are an increasing number of bots searching for these opportunities.
 
 ## install
 
@@ -26,13 +26,14 @@ If you use this script from an EOA expect to be frontrun. There are an increasin
 
 ## usage notes
 
-1. the scripts are hardcoded to use a local node on port 8545 for both http and ws requests (praise turbogeth). If you are using different ports or infura, change this line
-2. there is a "token blacklist" array that includes tokens that are self-destructed or not actually contracts, etc. This reduces overall errors.
-3. there is a "whitelist" that correctly names tokens who didn't follow the ERC-20 standard and return a byte32 for their name. there is probably a smarter way to deal with this edge case
+1. the scripts are hardcoded to use a local node on port 8545 for both http and ws requests (praise [turbogeth](https://github.com/ledgerwatch/turbo-geth)). If you are using different ports or infura, change this in the code
+2. there is a "token blacklist" array that includes tokens that are self-destructed, not actually contracts, or totally non-standard ERC20. This reduces overall errors
+3. there is a "whitelist" that correctly names tokens who didn't follow the ERC-20 standard and return a byte32 for their name. there is probably a smarter way to deal with this edge case than hardcoding but ¯\_(ツ)_/¯
 4. if you run into problems updating `events.js` hardcode the path directory in `fs.writeFile()` in `uniMarkets.js`
 5. `skim.js` defaults to return skim-able values that are greater than $0.10 or "NaN", which means coingecko does not have a price for that token. change those in the code if you want different parameters
-6. `events.js` is current as of block 10897528 and there are 9777 uniV2 Pairs
+6. `events.js` in this repo is current as of block 10897528 and there are 9777 uniV2 Pairs
 7. `skim.js` can take a few minutes to run as more and more markets are added
+8. if `uniMarkets.js` returns no results it's possible that there were no new pairs added since the last time you called the function
 
 ## example output
 
