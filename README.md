@@ -30,9 +30,9 @@ If you try to call skim from an EOA expect to be frontrun. There are an increasi
 2. there is a "token blacklist" array that includes tokens that are self-destructed, not actually contracts, or totally non-standard ERC20. This reduces overall errors
 3. there is a "whitelist" that correctly names tokens who didn't follow the ERC-20 standard and return a byte32 for their name (looking at you MKR). there is probably a smarter way to deal with this edge case than hardcoding but ¯\\_(ツ)_/¯
 4. if you run into problems updating `events.js` hardcode the path directory in `fs.writeFile()` in `uniMarkets.js`
-5. `skim.js` defaults to return skim-able values that are greater than $0.10 or "NaN", which means coingecko does not have a price for that token. change those in the code if you want different parameters
-6. `events.js` in this repo is current as of block 10897528 and there are 9777 uniV2🦄 Pairs
-7. `skim.js` can take a few minutes to run as more and more markets are added
+5. `skim.js` defaults to return skim-able values that are greater than $0.10. you can change this by altering the variable `minDollarVal` in `skim.js`. Skim-able values are also returned when coingecko does not have a price for the token (but they have most)
+6. `events.js` in this repo is current as of block 10898390 and there are 9791 uniV2🦄 Pairs
+7. `skim.js` can take a few minutes to run as there are almost 10,000 pairs to search!
 8. if `uniMarkets.js` returns no results it's possible that there were no new pairs were deployed since the last time you called the function
 
 ## example output
@@ -45,39 +45,12 @@ uniswap-skim npm run update
 > uniswap-skim@1.0.0 update /yourDirectory/uniswap-skim
 > node ./scripts/uniMarkets.js
 
-9742 10896099
-9743 10896192
-9744 10896201
-9745 10896233
-9746 10896241
-9747 10896287
-9748 10896328
-9749 10896370
-9750 10896393
-9751 10896406
-9752 10896535
-9753 10896619
-9754 10896624
-9755 10896627
-9756 10896652
-9757 10896684
-9758 10896691
-9759 10896710
-9760 10896736
-9761 10896778
-9762 10896834
-9763 10896862
-9764 10896889
-9765 10896902
-9766 10896921
-9767 10896956
-9768 10896960
-9769 10896979
-9770 10897001
-9771 10897237
-9772 10897239
-9773 10897302
-9774 10897491
+🦄 pair #: 9786 deployed in block: 10898080
+🦄 pair #: 9787 deployed in block: 10898182
+🦄 pair #: 9788 deployed in block: 10898201
+🦄 pair #: 9789 deployed in block: 10898327
+🦄 pair #: 9790 deployed in block: 10898366
+🦄 pair #: 9791 deployed in block: 10898390
 ```
 
 what your terminal should roughly look like after running `npm run skim`
@@ -89,51 +62,29 @@ uniswap-skim npm run skim
 > node ./scripts/skim.js
 
 {
-  "pairAddress": "0x243e8c1a5f67f042800571a0667bfd26ddb94fa4",
+  "pairAddress": "0x321d87e1757c8c9b57e7af5aa3fe13d2ae774445",
+  "pairIndex": 9355,
   "token0": {
-    "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-    "name": "Wrapped Ether",
+    "address": "0x29e240cfd7946ba20895a7a02edb25c210f9f324",
+    "name": "yearn Aave Interest bearing LINK",
     "decimals": "18",
-    "balance": "0.568343703003059029",
-    "reserve": "0.568343703003059029",
+    "balance": "252,858.663596952206854028",
+    "reserve": "252,858.663596952206854028",
     "imbalance": false
   },
   "token1": {
-    "address": "0xd29fa4b8cc936a68bb560b19eed969ebfdbaa565",
-    "name": "Ace Wins",
-    "decimals": "10",
-    "balance": "259,085.9413577280",
-    "reserve": "253,591.7648822625",
-    "imbalance": {
-      "diff": "5,494.1764754655",
-      "price": 0.00461814,
-      "value": "NaN"
-    }
-  }
-},
-{
-  "pairAddress": "0xa163bc0f3e37374288566f99f5ab313ea2b3410b",
-  "token0": {
-    "address": "0x328c4c80bc7aca0834db37e6600a6c49e12da4de",
-    "name": "Aave Interest bearing SNX",
+    "address": "0xa64bd6c70cb9051f6a9ba1f163fdc07e0dfb5f84",
+    "name": "Aave Interest bearing LINK",
     "decimals": "18",
-    "balance": "1,001.541332754973076103",
-    "reserve": "1,001.098402393891231926",
+    "balance": "267,963.012522435165106136",
+    "reserve": "267,962.996672942810947153",
     "imbalance": {
-      "diff": "0.442930361081790460",
-      "price": 4.42,
-      "value": "1.96"
+      "diff": "0.015849492360200192",
+      "usdPrice": 10.35,
+      "value": "$0.16🦄"
     }
-  },
-  "token1": {
-    "address": "0x78a685e0762096ed0f98107212e98f8c35a9d1d8",
-    "name": "Bloc",
-    "decimals": "10",
-    "balance": "1.6980857933",
-    "reserve": "1.6980857933",
-    "imbalance": false
   }
-},
+}
 ```
 
 ## disclaimers
