@@ -179,15 +179,13 @@ const splitBN = (num, dec, comma) => {
   } else {
     let aboveZero = num.length > dec ? num.substring(0, num.length - dec) : 0;
     let belowZero =
-      num.length >= dec ? num.substring((num.length - dec), num.length) : num.padStart(dec, "0");
+      num.length >= dec ? num.substring(num.length - dec, num.length) : num.padStart(dec, "0");
     if (comma) {
-      return `${aboveZero.toLocaleString()}.${belowZero}`;
+      return `${Number(aboveZero).toLocaleString()}.${belowZero}`
     } else {
       return `${aboveZero}.${belowZero}`;
     }
   }
-
-
 };
 
 const getPrice = async (address) => {
