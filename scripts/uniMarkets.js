@@ -26,7 +26,7 @@ const getPastLogs = async (address, fromBlock, toBlock) => {
       console.log(updatedEvents.length, item.blockNumber)
     });
 
-    fs.writeFile("../logs/events.js", await `module.exports = ${JSON.stringify(updatedEvents)}`, (e) => {
+    fs.writeFile("./logs/events.js", await `module.exports = ${JSON.stringify(updatedEvents)}`, (e) => {
       if (e) {
         console.log(e)
       }
