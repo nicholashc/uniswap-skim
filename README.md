@@ -26,13 +26,13 @@ If you try to call skim from an EOA expect to be frontrun. There are an increasi
 
 ## usage notes
 
-1. the scripts are hardcoded to use a local node on port 8545 for both http and ws requests (🙏 [turbogeth](https://github.com/ledgerwatch/turbo-geth)). If you are using different ports or infura, change this in the code
+1. the scripts are hardcoded to use a local node on port 8546 with a websockets connection. If you are using different ports or infura, change this in the code
 2. there is a "token blacklist" array that includes tokens that are self-destructed, not actually contracts, or totally non-standard ERC20. This reduces overall errors
 3. there is a "whitelist" that correctly names tokens who didn't follow the ERC-20 standard and return a byte32 for their name (looking at you MKR). there is probably a smarter way to deal with this edge case than hardcoding but ¯\\_(ツ)_/¯
-4. if you run into problems updating `events.js` hardcode the path directory in `fs.writeFile()` in `uniMarkets.js`
+4. if you run into problems updating `events.js` try: A) hardcode the path directory in `fs.writeFile()` in `uniMarkets.js` B) define the block range for `eth.getLogs` more narrowly if updating a long time period
 5. `skim.js` defaults to return skim-able values that are greater than $0.01 so you can see some results. you can change this by altering the variable `minDollarVal` in `skim.js`. Skim-able values are also returned when coingecko does not have a price for the token (but they have most)
-6. `events.js` in this repo is current as of block 10898390 and there are 9791 uniV2🦄 Pairs
-7. `skim.js` can take a few minutes to run as there are almost 10,000 pairs to search!
+6. `events.js` in this repo is current as of block 11057149 and there are 15,230 uniV2🦄 Pairs
+7. `skim.js` can take a few minutes to run as there are over 15,000 pairs to search!
 8. if `uniMarkets.js` returns no results it's possible that there were no new pairs were deployed since the last time you called the function
 9. the script ignores cases where the reserve is higher than the balance, since that is not skim-able (this happens with rebase coins sometimes)
 
