@@ -41,7 +41,7 @@ const getPairs = async count => {
 						pairAdd
 					);
 
-					const name0 = (getName(token0Add) !== false) ? getName(token0Add) : await token0contract.methods.name().call();
+					const name0 = getName(token0Add) !== false ? getName(token0Add) : await token0contract.methods.name().call();
 
 					const name1 = getName(token1Add) !== false ? getName(token1Add) : await token1contract.methods.name().call();
 
@@ -81,7 +81,7 @@ const getPairs = async count => {
 							balance: balance0,
 							reserve: reserve0,
 							imbalance: difference0.toString() > 0 ? {
-								diff: splitBN(difference0.toString(), decimals0),
+								diff: splitBN(difference0.toString(), decimals0, true),
 								usdPrice: await getPrice(token0Add),
 								value: await getValue(splitBN(difference0.toString(), decimals0, false), await getPrice(token0Add))
 							} : false
@@ -93,7 +93,7 @@ const getPairs = async count => {
 							balance: balance1,
 							reserve: reserve1,
 							imbalance: difference1.toString() > 0 ? {
-								diff: splitBN(difference1.toString(), decimals1),
+								diff: splitBN(difference1.toString(), decimals1, true),
 								usdPrice: await getPrice(token1Add),
 								value: await getValue(splitBN(difference1.toString(), decimals1, false), await getPrice(token1Add))
 							} : false
@@ -120,7 +120,6 @@ const getPairs = async count => {
 							if (pair.token1.imbalance.value) {
 								pair.token1.imbalance.value = `$${(pair.token1.imbalance.value)} 🦄`;
 							}
-
 							console.log(`${JSON.stringify(pair, null, 2)},`);
 						}
 					}
@@ -152,6 +151,7 @@ const getName = address => {
 };
 
 const splitBN = (number, dec, comma) => {
+
 	let numberConverted = number;
 
 	if (number.includes('e')) {
@@ -161,13 +161,17 @@ const splitBN = (number, dec, comma) => {
 	}
 
 	const aboveZero = numberConverted.length > dec ? numberConverted.slice(0, Math.max(0, numberConverted.length - dec)) : 0;
-	const belowZero = numberConverted.length >= dec ? numberConverted.slice(numberConverted.length - dec, numberConverted.length) : numberConverted.padStart(dec, '0');
+	let belowZero = numberConverted.length < dec ? numberConverted.padStart(dec, '0') : numberConverted.slice(numberConverted.length - dec, numberConverted.length);
+
+	if (dec === "0") {
+		belowZero = "0";
+	}
 
 	if (comma) {
 		return `${Number(aboveZero).toLocaleString()}.${belowZero}`;
+	} else {
+		return `${aboveZero}.${belowZero}`;
 	}
-
-	return `${aboveZero}.${belowZero}`;
 };
 
 const getPrice = async address => {
